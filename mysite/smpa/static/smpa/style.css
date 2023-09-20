@@ -1,0 +1,9 @@
+.scrollable {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.right-border {
+    border-right: 0.1px solid #cccccc;
+}
+

@@ -1,0 +1,10 @@
+{% for comment in poll.comment_set.all %}
+<p>
+    {{comment.comment_text}} - {{comment.author}} - {{comment.pub_date}}
+</p>
+{% if request.user in comment.likers.all %}
+<a href="{% url 'smpa:like' comment.id %}"><i class="fa-solid fa-thumbs-up"></i> : {{comment.likers.all | length}}</a>
+{% else %}
+<a href="{% url 'smpa:like' comment.id %}"><i class="fa-regular fa-thumbs-up"></i> : {{comment.likers.all | length}}</a>
+{% endif %}
+{% endfor %}

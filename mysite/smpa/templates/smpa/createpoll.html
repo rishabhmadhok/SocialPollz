@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="{% static 'smpa/style.css' %}">
+    <script src="https://kit.fontawesome.com/545a433e55.js" crossorigin="anonymous"></script>
+
+    <title>Create a Poll</title>
+</head>
+<body>
+    {% include 'smpa/topnavbar.html' %}
+    <section class="section">
+        <div class='box'>
+            <h1 class="title">Create a Poll</h1>
+            <form action="{% url 'smpa:createpoll' %}" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label class="label">Question</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Type your question here" id="question"
+                            name="question_text" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Topic</label>
+                    <div class="control">
+                        <div class="select">
+                            <select id="topic" name="topic" required>
+                                {% for topic in topics %}
+                                <option value="{{ topic.id }}">{{ topic.topic_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Choices</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Choice 1" id="choice1" name="choice1" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Choice 2" id="choice2" name="choice2" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Choice 3" id="choice3" name="choice3">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Choice 4 " id="choice4" name="choice4">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Choice 5" id="choice5" name="choice5">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input type="submit" class="button is-primary" value="Create Poll">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+        
+</body>
+</html>
+
+
+

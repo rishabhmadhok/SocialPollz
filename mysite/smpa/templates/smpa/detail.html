@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="{% static 'smpa/style.css' %}">
+    <script src="https://kit.fontawesome.com/545a433e55.js" crossorigin="anonymous"></script>
+ 
+ </head>
+ 
+ <body>
+    
+     {% include 'smpa/topnavbar.html' %}
+<section class="section">
+    
+        {% if poll %}
+            {% include 'smpa/question.html' %}
+    
+            {% if selected_choice %}
+                <section class="section">
+                    {% for choice in poll.choice_set.all %}
+                    <p>
+                        {% if choice == selected_choice %}
+                        <strong>{{choice.choice_text}}</strong> · {{choice.num_votes}} <progress class="progress is-link mb-3" value="{{choice.percent_votes}}" max="100"></progress>
+                        {% else %}
+                        {{choice.choice_text}} · {{choice.num_votes}} <progress class="progress is-link mb-3" value="{{choice.percent_votes}}" max="100"></progress>
+                        {% endif %}
+                    </p>
+                    {% endfor %}
+                </section>
+    
+                <article class="media">
+                    <!-- <figure class="media-left">
+                      <p class="image is-64x64">
+                        <img src="https://bulma.io/images/placeholders/128x128.png">
+                      </p>
+                    </figure> -->
+                    <form action ="{% url 'smpa:postcomment' poll.id %}" method ="post">
+                        {% csrf_token %}
+
+                        <div class="media-content">
+                          <div class="field">
+                            <p class="control">
+                              <textarea class="textarea" cols="130" name="comment_text" placeholder="Add a comment..."></textarea>
+                            </p>
+                          </div>
+                          <nav class="level">
+                            <div class="level-left">
+                              <div class="level-item">
+                                <input type="submit" class="button is-info" value="Post Comment">
+                              </div>
+                            </div>
+                          </nav>
+                        </div>
+                    </form>
+                  </article>
+           
+
+                <!-- <div class="media-content">
+                    <div class="field">
+                    <p class="control">
+                        <form action ="{% url 'smpa:postcomment' poll.id %}" method ="post">
+                            {% csrf_token %}
+                            <textarea class="textarea" placeholder="Add a comment..."></textarea>
+                    </p>
+                    </div>
+                    <nav class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                        <a class="button is-info">Submit</a>
+                        </div>
+                    </div>
+                </div> -->
+                
+                 <!-- <p>
+                 <form action ="{% url 'smpa:postcomment' poll.id %}" method ="post">
+                    {% csrf_token %}
+                    <textarea name = "comment_text" id="comment_text" cols = "30" rows= "10"></textarea>
+                    <p><button type = "submit">Post Comment</button>
+                </form>
+                </p> -->
+                {% for comment in poll.comment_set.all %}
+
+                    <article class="media">
+                        <!-- <figure class="media-left">
+                            <p class="image is-64x64">
+                                <img src="https://bulma.io/images/placeholders/128x128.png">
+                            </p>
+                        </figure> -->
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong>{{comment.author}}</strong>
+                                    <br>
+                                    {{comment.comment_text}}
+                                    <br>
+                                    {% if request.user in comment.likers.all %}
+                                        <small><a href="{% url 'smpa:like' comment.id %}"><i class="fa-solid fa-thumbs-up"></i> {{comment.likers.all | length}}</a> · {{comment.pub_date}}</small>
+                                    {% else %}
+                                    <small><a href="{% url 'smpa:like' comment.id %}"><i class="fa-regular fa-thumbs-up"></i> {{comment.likers.all | length}}</a> · {{comment.pub_date}}</small>
+                                    {% endif %}
+            
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+
+<!-- 
+
+
+                    <p>
+                        {{comment.comment_text}} - {{comment.author}} - {{comment.pub_date}}
+                    </p>
+                    {% if request.user in comment.likers.all %}
+                        <a href="{% url 'smpa:like' comment.id %}"><i class="fa-solid fa-thumbs-up"></i> : {{comment.likers.all | length}}</a>
+                    {% else %}
+                        <a href="{% url 'smpa:like' comment.id %}"><i class="fa-regular fa-thumbs-up"></i> : {{comment.likers.all | length}}</a>
+                    {% endif %} -->
+                {% endfor %}
+            {% else %}
+    
+                <form action = "{% url 'smpa:vote' poll.id %}" method = "POST">
+                    {% csrf_token %}
+                    {% for choice in poll.choice_set.all %}
+                        <p>
+                            <input type="radio" name="choice" id="choice{{choice.id}}" value="{{choice.id}}">
+                            <label for="choice{{choice.id}}">{{choice.choice_text}}</label>
+                        </p>
+                    {% endfor %}
+                    <input type="submit" value="Vote">
+                </form>
+            {% endif %}
+        {% endif %}
+</section>
+
+</body>
+
+</html>

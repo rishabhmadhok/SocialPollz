@@ -1,0 +1,16 @@
+<nav class="menu">
+    <div class="title is-4">
+        Topics
+    </div>
+
+
+        <ul class="menu-list">
+            {%for topic in topics%}
+                {% if topic == selected_topic %}
+                    <li><strong>{{topic}}</strong></li>
+                {% else %}
+                    <li><p><a href="{% url 'smpa:topics' topic.id %}">{{topic}}</a></p></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>

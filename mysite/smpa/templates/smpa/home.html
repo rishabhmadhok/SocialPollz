@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+   <link rel="stylesheet" href="{% static 'smpa/style.css' %}">
+   <script src="https://kit.fontawesome.com/545a433e55.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+   
+    {% include 'smpa/topnavbar.html' %}
+
+
+
+
+
+    <div class= "columns">
+      <div class = "column is-one-quarter p-6 right-border scrollable">
+            {% include 'smpa/topicnav.html' %}
+         
+      </div>
+      <div class="column is-three-quarters p-6">
+            {% include 'smpa/polls.html' %}
+      </div>
+    
+
+  
+
+
+</body>
+
+</html>
