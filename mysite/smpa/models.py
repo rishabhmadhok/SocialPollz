@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userp')
     firstname = models.CharField(max_length = 200,blank=True)
     lastname = models.CharField(max_length = 200,blank=True)
     photo = models.ImageField(blank=True, null=True)
     email = models.CharField(max_length = 200)
+    followers = models.ManyToManyField(User, related_name='follow')
 
     def __str__(self) -> str:
         return self.user.username
@@ -23,13 +24,16 @@ class Poll(models.Model):
     question_text = models.CharField(max_length = 200)
     author = models.ForeignKey(User,on_delete = models.DO_NOTHING)
     pub_date = models.DateTimeField('date published', auto_now_add=True)
-    upvoters = models.ManyToManyField(User,related_name='upvoters')
-    downvoters = models.ManyToManyField(User,related_name='downvoters')
+    upvoters = models.ManyToManyField(User,related_name='upvoted')
+    downvoters = models.ManyToManyField(User,related_name='downvoted')
     topic = models.ForeignKey(Topic,on_delete = models.DO_NOTHING)
-    voters = models.ManyToManyField(User, related_name='voters')
-    
+    voters = models.ManyToManyField(User, related_name='voted')
+
     def __str__(self) -> str:
         return self.question_text
+    
+    def get_engagement_score(self):
+        return self.upvoters.all().union(self.voters.all(), User.objects.filter(comments__in=self.comment_set.all())).count()
 
 class Choice(models.Model):
     choice_text = models.CharField(max_length = 200)
@@ -53,9 +57,9 @@ class Choice(models.Model):
 
 class Comment(models.Model):
     comment_text = models.TextField() 
-    author = models.ForeignKey(User,on_delete = models.DO_NOTHING, related_name='author')
+    author = models.ForeignKey(User,on_delete = models.DO_NOTHING, related_name='comments')
     pub_date = models.DateTimeField('date published', auto_now_add=True)
-    poll = models.ForeignKey(Poll,on_delete = models.CASCADE)
+    poll = models.ForeignKey(Poll, on_delete = models.CASCADE)
     likers = models.ManyToManyField(User, related_name='likers')
 
     def __str__(self) -> str:

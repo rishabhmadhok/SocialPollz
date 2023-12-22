@@ -3,51 +3,69 @@
         <div class="media-content">
             <div class="content">
                 <p>
-                    {{poll.author.userprofile_set.all.0.firstname | title}} {{poll.author.userprofile_set.all.0.lastname | title}}
-                    <small><a
-                            href="{% url 'smpa:profilepage' poll.author.username  %}">@{{poll.author.username}}</a></small>
-                    <small>{{poll.pub_date}}</small>
+                    {{poll.author.userp.all.0.firstname | title}} {{poll.author.userp.all.0.lastname | title}}
+
+
+                    <small>
+                        <a href="{% url 'smpa:profilepage' poll.author.username  %}">@{{poll.author.username}}</a>
+
+                        {% if poll.author != request.user %}
+                            {% if request.user not in poll.author.userp.all.0.followers.all %}
+                            <a href="{% url 'smpa:follow' poll.author.id %}"> - Follow</a>
+                            {% else %}
+                            <a href="{% url 'smpa:follow' poll.author.id %}"> - Unfollow</a>
+                            {% endif %}
+                            &nbsp; {{poll.author.userp.all.0.followers.all | length}}
+
+                        {% endif %}
+                    </small>
                     <br>
+                    <small>{{poll.pub_date}}</small>
+
+                    <br><br>
+
+
                     {% if hyperlinked_question %}
-                        <a href="{% url 'smpa:polldetail' poll.id %}">{{poll.question_text}}</a>
+                    <a href="{% url 'smpa:polldetail' poll.id %}">{{poll.question_text}}</a>
                     {% else %}
-                        {{poll.question_text}}
+                    {{poll.question_text}}
                     {% endif %}
-    
+
                 </p>
             </div>
             <nav class="level is-mobile">
                 <div class="level-left">
                     <a class="level-item">
                         <span class="icon is-small">
-                        {% if request.user not in poll.upvoters.all %}
-                        <a href="{% url 'smpa:upvote' poll.id %}"><i class="fa-regular fa-thumbs-up"></i></a>
-                        {% else %}
-                        <a href="{% url 'smpa:upvote' poll.id %}"><i class="fa-solid fa-thumbs-up"></i></a>
-                        {% endif %}
-                        &nbsp; {{poll.upvoters.all | length}}
-    
+                            {% if request.user not in poll.upvoters.all %}
+                            <a href="{% url 'smpa:upvote' poll.id %}"><i class="fa-regular fa-thumbs-up"></i></a>
+                            {% else %}
+                            <a href="{% url 'smpa:upvote' poll.id %}"><i class="fa-solid fa-thumbs-up"></i></a>
+                            {% endif %}
+                            &nbsp; {{poll.upvoters.all | length}}
+
                         </span>
                     </a>
-    
+
                     <a class="level-item">
                         <span class="icon is-small">
-                        {% if request.user not in poll.downvoters.all %}
-                        <a href="{% url 'smpa:downvote' poll.id %}"><i class="fa-regular fa-thumbs-down"></i></a>
-                        {% else %}
-                        <a href="{% url 'smpa:downvote' poll.id %}"><i class="fa-solid fa-thumbs-down"></i></a>
-                        {% endif %}
-                        &nbsp; {{poll.downvoters.all | length}}
-    
+                            {% if request.user not in poll.downvoters.all %}
+                            <a href="{% url 'smpa:downvote' poll.id %}"><i class="fa-regular fa-thumbs-down"></i></a>
+                            {% else %}
+                            <a href="{% url 'smpa:downvote' poll.id %}"><i class="fa-solid fa-thumbs-down"></i></a>
+                            {% endif %}
+                            &nbsp; {{poll.downvoters.all | length}}
+
                         </span>
                     </a>
+
                 </div>
             </nav>
         </div>
-    
+
     </article>
-    
-    
-    
-    
+
+
+
+
 </div>

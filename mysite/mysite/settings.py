@@ -125,3 +125,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SMPA = {
+    'RECOMMEND_BASED_ON_HOW_MANY_SIMILAR_USERS': 2,
+    'MIN_RECS_FROM_SIMILAR_USERS': 2,
+    'MIN_RECS_FROM_INTERESTING_TOPICS': 2,
+    'MAX_RECS': 10
+}

@@ -10,32 +10,12 @@
   
 </head>
 
-<!-- <div class="box">
-  <body>
-    {% if error_message %}
-      <p style="color: red;">{{ error_message }}</p>
-    {% endif %}
-    <form action="{% url 'smpa:my_login' %}"  method="post">
-      {% csrf_token %}
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username">
-      <br>
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password">
-      <br>
-      <input type="submit" value="Login">
-    </form>
-    <p>
-      <a href="{% url 'smpa:signup' %}">Sign up here if you don't already have an account</a>
-    </p>
-  </body>
-</div>
-</html> -->
 
 <body>
   <section class="section">
     <h1 class="title">Log In</h1>
     <div class="box">
+      {% if error_message %} <small>invalid login details</small> {% endif %}
       <form action="{% url 'smpa:my_login' %}" method="post">
         {% csrf_token %}
         <div class="field">

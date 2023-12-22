@@ -18,5 +18,8 @@ urlpatterns = [
     path('<int:comment_id>/like',views.like,name = 'like'),
     path('<int:poll_id>/postcomment',views.postcomment,name = 'postcomment'),
     path('profile/<str:username>',views.profilepage,name = 'profilepage'),
+    path('<int:user_id>/follow',views.follow,name = 'follow'),
+    path('following',views.followingfeed, name = 'followingfeed'),
+    path('recommended',views.recommendedfeed,name = 'recommendedfeed')
 
 ]
